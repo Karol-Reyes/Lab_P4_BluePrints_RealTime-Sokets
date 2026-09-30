@@ -1,5 +1,12 @@
 # Lab P4 — BluePrints en Tiempo Real (Sockets & STOMP)
 
+## Integrantes
+
+- Karol XImena Rodriguez Reyes.
+- Juan David Moreno D'Aleman.
+
+---
+
 > **Repositorio:** `DECSIS-ECI/Lab_P4_BluePrints_RealTime-Sokets`  
 > **Front:** React + Vite (Canvas, CRUD, y selector de tecnología RT)  
 > **Backends guía (elige uno o compáralos):**
