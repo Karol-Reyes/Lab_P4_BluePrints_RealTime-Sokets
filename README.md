@@ -81,6 +81,9 @@ En la UI, selecciona la tecnología en el **selector RT**.
 
 ## 🚀 Puesta en marcha
 
+## *Revise este archivo para iniciar correctamente el laboratorio*
+[SETUP BLUEPRINT](/SETUP.md)
+
 ### 1) Backend RT (elige uno)
 
 **Opción A — Socket.IO (Node.js)**  
