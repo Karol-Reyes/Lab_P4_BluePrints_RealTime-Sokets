@@ -157,6 +157,8 @@ En la interfaz: selecciona **Socket.IO** o **STOMP**, define `author` y `name`, 
 2. **Video corto** (≤ 90s) mostrando colaboración en vivo y operaciones CRUD.  
 3. **README del equipo**: setup, endpoints usados, decisiones (rooms/tópicos), y (opcional) breve comparativa Socket.IO vs STOMP.
 
+- Las documentaciones con respecto al back se encuentran aquí: [backend](/src/resources/BACK_TEST.md)
+
 ---
 
 ## 🧮 Rúbrica sugerida
