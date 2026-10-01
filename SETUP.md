@@ -5,6 +5,12 @@ En este repositorio, tenemos organizaso el entregable de documentación y eviden
 - **Backend**: https://github.com/Karol-Reyes/Back_Blueprint
 - **Frontend**: https://github.com/Karol-Reyes/Front_Blueprint
 
+## Documentación del equipo
+
+- [README.md](README.md): resumen del laboratorio y rutas de la documentación.
+- [FRONT_TEST.md](src/resources/FRONT_TEST.md): pruebas funcionales y evidencias del Front.
+- [BACK_TEST.md](src/resources/BACK_TEST.md): pruebas, endpoints y decisiones del Back.
+
 ## Orden de inicialización
 
 ### 1. Base de datos (PostgreSQL)

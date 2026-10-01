@@ -7,6 +7,16 @@
 
 ---
 
+## Documentación del equipo
+
+Toda la información para configurar e iniciar los servicios está centralizada en [SETUP.md](SETUP.md). Los documentos de pruebas y evidencias son:
+
+- [SETUP.md](SETUP.md): instrucciones de instalación, configuración y ejecución.
+- [FRONT_TEST.md](src/resources/FRONT_TEST.md): pruebas funcionales y de colaboración del Front.
+- [BACK_TEST.md](src/resources/BACK_TEST.md): pruebas y endpoints del Back.
+
+---
+
 > **Repositorio:** `DECSIS-ECI/Lab_P4_BluePrints_RealTime-Sokets`  
 > **Front:** React + Vite (Canvas, CRUD, y selector de tecnología RT)  
 > **Backends guía (elige uno o compáralos):**
@@ -65,54 +75,11 @@ React (Vite)
 
 ---
 
-## ⚙️ Variables de entorno (Front)
-Crea `.env.local` en la raíz del proyecto **Front**:
-```bash
-# REST (tu backend CRUD)
-VITE_API_BASE=http://localhost:8080
-
-# Tiempo real: apunta a uno u otro según el backend que uses
-VITE_IO_BASE=http://localhost:3001     # si usas Socket.IO (Node)
-VITE_STOMP_BASE=http://localhost:8080  # si usas STOMP (Spring)
-```
-En la UI, selecciona la tecnología en el **selector RT**.
-
 ---
 
 ## 🚀 Puesta en marcha
 
-## *Revise este archivo para iniciar correctamente el laboratorio*
-[SETUP BLUEPRINT](/SETUP.md)
-
-### 1) Backend RT (elige uno)
-
-**Opción A — Socket.IO (Node.js)**  
-Sigue el README del repo guía:  
-https://github.com/DECSIS-ECI/example-backend-socketio-node-/blob/main/README.md
-```bash
-npm i
-npm run dev
-# expone: http://localhost:3001
-# prueba rápida del estado inicial:
-curl http://localhost:3001/api/blueprints/juan/plano-1
-```
-
-**Opción B — STOMP (Spring Boot)**  
-Sigue el repo guía:  
-https://github.com/DECSIS-ECI/example-backend-stopm/tree/main
-```bash
-./mvnw spring-boot:run
-# expone: http://localhost:8080
-# endpoint WS (ej.): /ws-blueprints
-```
-
-### 2) Front (este repo)
-```bash
-npm i
-npm run dev
-# http://localhost:5173
-```
-En la interfaz: selecciona **Socket.IO** o **STOMP**, define `author` y `name`, abre **dos pestañas** y dibuja en el canvas (clics).
+Consulta [SETUP.md](SETUP.md) para los pasos completos de instalación, configuración y ejecución del laboratorio.
 
 ---
 
