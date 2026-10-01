@@ -58,3 +58,14 @@ El Front identifica el evento por `type`: agrega el punto para el evento de dibu
 ## Resultado
 
 Las pruebas del Front permiten verificar la autenticación, el CRUD, el conteo de puntos y la colaboración STOMP entre clientes. La guía para iniciar los servicios y la configuración del entorno está en [SETUP.md](../../SETUP.md); las pruebas del backend están en [BACK_TEST.md](BACK_TEST.md).
+
+### Video:
+
+
+
+
+https://github.com/user-attachments/assets/a3a3db97-826f-4061-82bb-ec207c7718fa
+
+
+
+
