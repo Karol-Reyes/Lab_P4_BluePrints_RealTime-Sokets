@@ -48,6 +48,33 @@ Los mensajes recibidos por el tópico `/topic/blueprints.{author}.{name}` pueden
 
 El Front identifica el evento por `type`: agrega el punto para el evento de dibujo, reemplaza todos los puntos en `UPDATED` y quita el blueprint en `DELETED`.
 
+### Aislamiento por blueprint
+
+1. Abrir el blueprint A en dos pestañas y un blueprint B, con nombre distinto, en una tercera.
+2. Seleccionar `STOMP` en las tres pestañas.
+3. Dibujar un punto en A y confirmar que aparece en la otra pestaña de A.
+4. Confirmar que el canvas y los puntos de B no cambian.
+
+**Resultado observado:** completar después de ejecutar la prueba: ____________________.
+
+### Desconexión y reconexión
+
+1. Mantener abierto el mismo blueprint en dos pestañas con STOMP conectado.
+2. Detener temporalmente el Back y comprobar que el estado de conexión deja de indicar `connected`.
+3. Reiniciar el Back y comprobar que el cliente se reconecta.
+4. Dibujar un nuevo punto y confirmar que vuelve a replicarse. Registrar si se perdió algún evento durante la desconexión.
+
+**Resultado observado:** completar después de ejecutar la prueba: ____________________.
+
+### Medición de latencia
+
+Repetir el envío de puntos al menos 10 veces y medir el tiempo entre el clic en la pestaña emisora y la aparición del punto en la receptora. Completar los valores con mediciones reales.
+
+| Medición | Latencia observada (ms) |
+|---|---:|
+| Repeticiones 1–10 | Completar después de medir |
+| Mediana | Completar después de medir |
+
 
 ### Actualizar y eliminar
 
@@ -57,14 +84,13 @@ El Front identifica el evento por `type`: agrega el punto para el evento de dibu
 
 ## Resultado
 
-Las pruebas del Front permiten verificar la autenticación, el CRUD, el conteo de puntos y la colaboración STOMP entre clientes. La guía para iniciar los servicios y la configuración del entorno está en [SETUP.md](../../SETUP.md); las pruebas del backend están en [BACK_TEST.md](BACK_TEST.md).
+Las pruebas descritas cubren autenticación, CRUD, conteo de puntos, colaboración STOMP, aislamiento entre planos y reconexión. Los resultados de latencia y reconexión deben completarse después de ejecutar las mediciones. La guía para iniciar los servicios está en [SETUP.md](../../SETUP.md); las pruebas del backend están en [BACK_TEST.md](BACK_TEST.md).
 
 ### Video:
 
 
-
-
 https://github.com/user-attachments/assets/a3a3db97-826f-4061-82bb-ec207c7718fa
+
 
 
 

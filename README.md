@@ -17,36 +17,35 @@ Toda la información para configurar e iniciar los servicios está centralizada 
 
 ---
 
-> **Repositorio:** `DECSIS-ECI/Lab_P4_BluePrints_RealTime-Sokets`  
-> **Front:** React + Vite (Canvas, CRUD, y selector de tecnología RT)  
-> **Backends guía (elige uno o compáralos):**
-> - **Socket.IO (Node.js):** https://github.com/DECSIS-ECI/example-backend-socketio-node-/blob/main/README.md
-> - **STOMP (Spring Boot):** https://github.com/DECSIS-ECI/example-backend-stopm/tree/main
+> **Repositorio:** `DECSIS-ECI/Lab_P4_BluePrints_RealTime-Sokets`
+>
+> **Front:** React + Vite (Canvas, REST CRUD y selector RT)
+> **Implementación del equipo:** Back Spring Boot + PostgreSQL y tiempo real con STOMP. Socket.IO queda como alternativa de referencia y no está conectado a esta aplicación.
 
 ## 🎯 Objetivo del laboratorio
-Implementar **colaboración en tiempo real** para el caso de BluePrints. El Front consume la API CRUD de la Parte 3 (o equivalente) y habilita tiempo real usando **Socket.IO** o **STOMP**, para que múltiples clientes dibujen el mismo plano de forma simultánea.
+Implementar **colaboración en tiempo real** para el caso de BluePrints. El Front consume la API CRUD de la Parte 3 y usa **STOMP** para que múltiples clientes dibujen el mismo plano de forma simultánea.
 
 Al finalizar, el equipo debe:
 1. Integrar el Front con su **API CRUD** (listar/crear/actualizar/eliminar planos, y total de puntos por autor).
-2. Conectar el Front a un backend de **tiempo real** (Socket.IO **o** STOMP) siguiendo los repos guía.
+2. Conectar el Front al backend de tiempo real mediante STOMP.
 3. Demostrar **colaboración en vivo** (dos pestañas navegando el mismo plano).
 
 ---
 
 ## 🧩 Alcance y criterios funcionales
 - **CRUD** (REST):
-  - `GET /api/blueprints?author=:author` → lista por autor (incluye total de puntos).
-  - `GET /api/blueprints/:author/:name` → puntos del plano.
+  - `GET /api/blueprints` → lista todos los planos.
+  - `GET /api/blueprints/{author}` → lista los planos de un autor.
+  - `GET /api/blueprints/{author}/{name}` → puntos del plano.
   - `POST /api/blueprints` → crear.
-  - `PUT /api/blueprints/:author/:name` → actualizar.
-  - `DELETE /api/blueprints/:author/:name` → eliminar.
-- **Tiempo real (RT)** (elige uno):
-  - **Socket.IO** (rooms): `join-room`, `draw-event` → broadcast `blueprint-update`.
-  - **STOMP** (topics): `@MessageMapping("/draw")` → `convertAndSend(/topic/blueprints.{author}.{name})`.
+  - `PUT /api/blueprints/{author}/{name}` → actualizar.
+  - `DELETE /api/blueprints/{author}/{name}` → eliminar.
+- **Tiempo real (RT, implementado por el equipo):**
+  - **STOMP** (topics): `/app/draw` → broadcast a `/topic/blueprints.{author}.{name}`.
 - **UI**:
   - Canvas con **dibujo por clic** (incremental).
   - Panel del autor: **tabla** de planos y **total de puntos** (`reduce`).
-  - Barra de acciones: **Create / Save/Update / Delete** y **selector de tecnología** (None / Socket.IO / STOMP).
+  - Barra de acciones: **Create / Save/Update / Delete** y selector RT (`None` / `STOMP`).
 - **DX/Calidad**: código limpio, manejo de errores, README de equipo.
 
 ---
@@ -56,9 +55,7 @@ Al finalizar, el equipo debe:
 ```
 React (Vite)
  ├─ HTTP (REST CRUD + estado inicial) ───────────────> Tu API (P3 / propia)
- └─ Tiempo Real (elige uno):
-     ├─ Socket.IO: join-room / draw-event ──────────> Socket.IO Server (Node)
-     └─ STOMP: /app/draw -> /topic/blueprints.* ────> Spring WebSocket/STOMP
+ └─ STOMP: /app/draw -> /topic/blueprints.* ────────> Spring WebSocket/STOMP
 ```
 
 **Convenciones recomendadas**  
@@ -67,11 +64,10 @@ React (Vite)
 
 ---
 
-## 📦 Repos guía (clona/consulta)
-- **Socket.IO (Node.js)**: https://github.com/DECSIS-ECI/example-backend-socketio-node-/blob/main/README.md  
-  - *Uso típico en el cliente:* `io(VITE_IO_BASE, { transports: ['websocket'] })`, `join-room`, `draw-event`, `blueprint-update`.
-- **STOMP (Spring Boot)**: https://github.com/DECSIS-ECI/example-backend-stopm/tree/main  
-  - *Uso típico en el cliente:* `@stomp/stompjs` → `client.publish('/app/draw', body)`; suscripción a `/topic/blueprints.{author}.{name}`.
+## 📦 Referencias de tiempo real
+- **STOMP (Spring Boot, usado por este equipo):** https://github.com/DECSIS-ECI/example-backend-stopm/tree/main
+  - El cliente publica en `/app/draw` y se suscribe al tópico `/topic/blueprints.{author}.{name}`.
+- **Socket.IO (alternativa de referencia, no integrada):** https://github.com/DECSIS-ECI/example-backend-socketio-node-/blob/main/README.md
 
 ---
 
@@ -85,7 +81,7 @@ Consulta [SETUP.md](SETUP.md) para los pasos completos de instalación, configur
 
 ## 🔌 Protocolos de Tiempo Real (detalle mínimo)
 
-### A) Socket.IO
+### A) Socket.IO (alternativa de referencia; no conectada en este proyecto)
 - **Unirse a sala**
   ```js
   socket.emit('join-room', `blueprints.${author}.${name}`)
@@ -106,13 +102,15 @@ Consulta [SETUP.md](SETUP.md) para los pasos completos de instalación, configur
   ```
 - **Suscribirse a tópico**
   ```js
-  client.subscribe(`/topic/blueprints.${author}.${name}`, (msg) => { /* append points y repintar */ })
+  client.subscribe(`/topic/blueprints.${author}.${name}`, (msg) => { /* actualizar estado según evento */ })
   ```
+
+El tópico puede publicar el evento de dibujo `{ author, name, point }` o los eventos `UPDATED` y `DELETED`, que incluyen la lista `points`.
 
 ---
 
 ## 🧪 Casos de prueba mínimos
-- **Estado inicial**: al seleccionar plano, el canvas carga puntos (`GET /api/blueprints/:author/:name`).  
+- **Estado inicial**: al seleccionar plano, el canvas carga puntos (`GET /api/blueprints/{author}/{name}`).
 - **Dibujo local**: clic en canvas agrega puntos y redibuja.  
 - **RT multi-pestaña**: con 2 pestañas, los puntos se **replican** casi en tiempo real.  
 - **CRUD**: Create/Save/Delete funcionan y refrescan la lista y el **Total** del autor.
@@ -124,7 +122,7 @@ Consulta [SETUP.md](SETUP.md) para los pasos completos de instalación, configur
 2. **Video corto** (≤ 90s) mostrando colaboración en vivo y operaciones CRUD.  
 3. **README del equipo**: setup, endpoints usados, decisiones (rooms/tópicos), y (opcional) breve comparativa Socket.IO vs STOMP.
 
-- Las documentaciones con respecto al back se encuentran aquí: [backend](/src/resources/BACK_TEST.md)
+Este equipo implementa STOMP; la decisión y los destinos `/app/draw` y `/topic/blueprints.{author}.{name}` están documentados en [BACK_TEST.md](src/resources/BACK_TEST.md). Socket.IO es una alternativa de referencia y no forma parte de la aplicación entregada.
 
 ---
 
@@ -138,9 +136,8 @@ Consulta [SETUP.md](SETUP.md) para los pasos completos de instalación, configur
 
 ## 🩺 Troubleshooting
 - **Pantalla en blanco (Front)**: revisa consola; confirma `@vitejs/plugin-react` instalado y que `AppP4.jsx` esté en `src/`.  
-- **No hay broadcast**: ambas pestañas deben hacer `join-room` al **mismo** plano (Socket.IO) o suscribirse al **mismo tópico** (STOMP).  
+- **No hay broadcast**: ambas pestañas deben abrir el mismo plano y suscribirse al tópico STOMP `/topic/blueprints.{author}.{name}`.
 - **CORS**: en dev permite `http://localhost:5173`; en prod, **restringe orígenes**.  
-- **Socket.IO no conecta**: fuerza transporte WebSocket `{ transports: ['websocket'] }`.  
 - **STOMP no recibe**: verifica `brokerURL`/`webSocketFactory` y los prefijos `/app` y `/topic` en Spring.
 
 ---
